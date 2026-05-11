@@ -1,0 +1,12 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: dns_config
+RULE: dns_failure
+SEVERITY: critical (author judgment)
+LIKELY CAUSE: DNS resolution failed for upstream host "api.exmaple.com"
+EVIDENCE:
+- DNS resolution failed for api.exmaple.com: no such host
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose dns_config

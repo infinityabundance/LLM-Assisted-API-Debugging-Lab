@@ -1,0 +1,170 @@
+# Per-rule prose for the diagnostic engine.
+#
+# Each rule's prose lives here, separate from `crates/llm-assisted-api-debugging-lab/src/diagnose.rs`
+# where the rule logic lives. Editorial changes (wording, tone) do not require
+# a code change. Logic changes (severity, rule order, evidence patterns) still
+# go in `diagnose.rs`.
+#
+# Templates use `{host}`, `{peer}`, `{field}` placeholders that are filled in
+# at render time by the matching rule arm. Adding a new placeholder requires
+# both a TOML edit here and a code edit in the consuming rule arm.
+
+[rules.dns_failure]
+severity_rationale = "connection never reached the API; no application-layer traffic is flowing"
+likely_cause_template = 'DNS resolution failed for upstream host "{host}"'
+hypotheses = [
+    "Hostname is misspelled or points at the wrong environment.",
+    "Local resolver or upstream DNS provider is failing.",
+    "Private DNS zone is not reachable from this network.",
+]
+unknowns = [
+    "Whether other hostnames resolve from the same environment.",
+    "Recent DNS, hosts-file, or VPN configuration changes.",
+]
+next_steps = [
+    "Confirm the hostname character-for-character against documentation.",
+    "Run `dig <host>` or `getent hosts <host>` from the affected environment.",
+    "Check whether the DNS resolver was changed recently (e.g. systemd-resolved, VPN).",
+    "Retry from a known-good network to isolate environment from configuration.",
+]
+escalation_note = "Connection never reached the API: name resolution for the upstream host failed. Until DNS resolves, no application-level diagnosis is possible."
+
+[rules.tls_failure]
+severity_rationale = "transport-layer failure; no HTTP request was transmitted"
+likely_cause_template = 'TLS handshake to "{peer}" failed; no HTTP request was sent.'
+hypotheses = [
+    "Server certificate is expired, not yet valid, or signed by an untrusted CA.",
+    "Hostname requested does not match any name on the presented certificate.",
+    "Client trust store is missing an intermediate or root certificate.",
+    "TLS protocol or cipher mismatch between client and server.",
+]
+unknowns = [
+    "Whether the same client successfully completed TLS to this peer recently.",
+    "The full certificate chain the server presented (subject, SANs, issuer, NotAfter).",
+    "Client TLS library, version, and configured trust store.",
+]
+next_steps = [
+    "Run `openssl s_client -connect <peer>:443 -servername <peer>` and inspect the chain.",
+    "Check the leaf certificate's NotAfter and Subject Alternative Names against the requested hostname.",
+    "Verify the client's trust store includes the issuer's intermediate and root.",
+    "Compare against another client (e.g. `curl -v`) from the same network to isolate client vs server.",
+]
+escalation_note = "Connection failed at the TLS layer: no HTTP request was ever transmitted, so no application-level evidence is available. Resolution requires inspection of the certificate chain or client trust store; the failure is in the transport, not the API."
+
+[rules.connection_timeout]
+severity_rationale = "client aborted before any response was received; no graceful degradation possible"
+likely_cause = "Upstream request exceeded the client's configured timeout."
+hypotheses = [
+    "Server-side processing is slower than the client's timeout budget.",
+    "Network path between client and server is saturated or degraded.",
+    "A downstream dependency (DB, queue, third party) is slow for this endpoint.",
+]
+unknowns = [
+    "Whether this endpoint is normally under the client's timeout.",
+    "Recent infrastructure or deploy changes on either side.",
+    "Server-side P99 latency for this endpoint over the same window.",
+]
+next_steps = [
+    "Compare the client timeout against the documented P99 for this endpoint.",
+    "Retry once with verbose timing to confirm the abort is on the client side.",
+    "Correlate the failed request_id with server-side traces if available.",
+    "If the request is normally long-running, raise the timeout or move to async.",
+]
+escalation_note = "The client aborted before any HTTP response was received. Evidence is consistent with a slow upstream rather than an application-layer error; root cause requires server-side traces correlated by request_id."
+
+[rules.webhook_signature]
+severity_rationale = "silent integration failure that breaks downstream automation; failures often go unnoticed"
+likely_cause = "Inbound webhook failed HMAC signature verification."
+hypotheses = [
+    "Signing secret was rotated on one side only.",
+    "Request body was re-encoded by middleware before HMAC computation.",
+    "Client/server clock drift exceeds the signature tolerance window.",
+]
+unknowns = [
+    "Whether the signing secret was rotated recently.",
+    "Whether middleware in the customer's stack mutates the raw body.",
+    "NTP / clock-sync state on the customer's webhook receiver.",
+]
+next_steps = [
+    "Confirm the signing secret matches on sender and receiver, character for character.",
+    "Verify the receiver computes HMAC over the raw request body, before any JSON parse/re-encode.",
+    "Check NTP on the receiver; signature timestamps must fall inside the documented tolerance.",
+    "Re-send a single test event and capture the raw body bytes alongside the X-Signature header.",
+]
+escalation_note = "Failure occurs before application-level payload handling: HMAC verification rejects the request. Evidence is consistent with secret mismatch, body mutation in middleware, or clock drift past tolerance; these are not yet distinguished by the available evidence."
+
+[rules.rate_limit]
+severity_rationale = "expected back-pressure: affects throughput, not correctness; client retry path applies"
+likely_cause = "Account rate limit exceeded; server requested back-off."
+hypotheses = [
+    "Client lacks exponential back-off on 429 responses.",
+    "Multiple concurrent workers share one account quota and burst together.",
+    "An upstream batch job temporarily lifted request volume above steady state.",
+]
+unknowns = [
+    "Number of concurrent processes or workers issuing requests.",
+    "Whether request rate has been trending up over recent days.",
+    "Whether the account quota has changed recently.",
+]
+next_steps = [
+    "Honor the Retry-After value before retrying.",
+    "Implement exponential back-off with jitter on 429 responses.",
+    "Cap concurrency across workers sharing the same API key.",
+    "If sustained, request a quota increase or move bulk work to a batched endpoint.",
+]
+escalation_note = "Server explicitly signaled 429 with Retry-After; this is expected back-pressure rather than a service fault. Evidence does not yet show whether the client honors Retry-After or retries blindly."
+
+[rules.auth_missing]
+severity_rationale = "request rejected at the auth boundary; integration is not yet working but the failure mode is well-understood"
+likely_cause = "Request reached the server without an Authorization header."
+hypotheses = [
+    "API key is not configured in the environment that issued the request.",
+    "Secret manager or env var loaded after the request was issued.",
+    "A reverse proxy or middleware stripped the Authorization header.",
+]
+unknowns = [
+    "Whether the same client previously authenticated successfully against this endpoint.",
+    "Which environment (local / staging / production) the request originated from.",
+]
+next_steps = [
+    "Confirm the API key is set in the environment that issued the request.",
+    "Print the outbound headers immediately before send to verify Authorization is present.",
+    "Inspect any reverse proxy or service mesh between client and server for header rewrites.",
+]
+escalation_note = "401 with no Authorization header observed in the request. The header is being dropped or never set; root cause is on the client or in an intermediary, not in the server's auth logic."
+
+[rules.bad_payload]
+severity_rationale = "single client-side request fails with structured validation feedback; correctable by the client without intervention"
+likely_cause_template_with_field = "Request payload failed server-side schema validation on field `{field}`."
+likely_cause_template_no_field = "Request payload failed server-side schema validation."
+hypotheses = [
+    "Client serialized a value with the wrong type (e.g. string for an integer).",
+    "Client SDK is older than the current server schema.",
+    "Required field is missing or misnamed in the request body.",
+]
+unknowns = [
+    "Client SDK version and language.",
+    "Whether other endpoints from the same client succeed.",
+]
+next_steps = [
+    "Cross-reference the failing field against the public schema or OpenAPI spec.",
+    "Log the full outbound request body in the failing client and inspect the field's type.",
+    "Upgrade the client SDK if the schema has changed since it was generated.",
+]
+escalation_note = "Server responded 400 with a structured validation error. This is a client-side payload bug rather than a service fault; resolution is on the client."
+
+[rules.unknown]
+severity_rationale = "no rule matched; severity defaults to Low pending classification, not because the failure is benign"
+likely_cause = "Evidence does not match any built-in rule."
+hypotheses = [
+    "The failure mode is real but outside the rules this lab encodes.",
+    "The collected evidence is incomplete and a rule would match if more were present.",
+]
+unknowns = [
+    "Whether additional log lines or response headers would change the classification.",
+]
+next_steps = [
+    "Add a fixture and a rule for this evidence shape, with a unit test, before claiming a diagnosis.",
+    "Do not invent a likely cause from the evidence presented.",
+]
+escalation_note = "No rule matched. The diagnoser is reporting evidence only; any cause assigned beyond this would be speculation."

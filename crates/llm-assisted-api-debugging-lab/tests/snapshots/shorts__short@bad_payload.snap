@@ -1,0 +1,13 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: bad_payload
+RULE: bad_payload
+SEVERITY: low (author judgment)
+LIKELY CAUSE: Request payload failed server-side schema validation on field `amount`.
+EVIDENCE:
+- HTTP status: 400
+- JSON validation error on field `amount`: Expected integer, got string.
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose bad_payload

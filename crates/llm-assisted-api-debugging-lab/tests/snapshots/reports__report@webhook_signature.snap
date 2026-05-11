@@ -1,0 +1,36 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: webhook_signature
+RULE: webhook_signature
+SEVERITY: high (author judgment: silent integration failure that breaks downstream automation; failures often go unnoticed)
+LIKELY CAUSE: Inbound webhook failed HMAC signature verification.
+
+EVIDENCE:
+- HTTP status: 401
+- HMAC signature verification failed.
+- Clock drift 360s exceeds tolerance 300s.
+- Request body was modified by middleware before verification.
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- Signing secret was rotated on one side only.
+- Request body was re-encoded by middleware before HMAC computation.
+- Client/server clock drift exceeds the signature tolerance window.
+
+UNKNOWNS (do not invent answers):
+- Whether the signing secret was rotated recently.
+- Whether middleware in the customer's stack mutates the raw body.
+- NTP / clock-sync state on the customer's webhook receiver.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose webhook_signature
+
+NEXT STEPS:
+1. Confirm the signing secret matches on sender and receiver, character for character.
+2. Verify the receiver computes HMAC over the raw request body, before any JSON parse/re-encode.
+3. Check NTP on the receiver; signature timestamps must fall inside the documented tolerance.
+4. Re-send a single test event and capture the raw body bytes alongside the X-Signature header.
+
+ESCALATION NOTE:
+Failure occurs before application-level payload handling: HMAC verification rejects the request. Evidence is consistent with secret mismatch, body mutation in middleware, or clock drift past tolerance; these are not yet distinguished by the available evidence.

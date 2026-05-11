@@ -1,0 +1,32 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: auth_missing
+RULE: auth_missing
+SEVERITY: medium (author judgment: request rejected at the auth boundary; integration is not yet working but the failure mode is well-understood)
+LIKELY CAUSE: Request reached the server without an Authorization header.
+
+EVIDENCE:
+- HTTP status: 401
+- Request header missing: Authorization
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- API key is not configured in the environment that issued the request.
+- Secret manager or env var loaded after the request was issued.
+- A reverse proxy or middleware stripped the Authorization header.
+
+UNKNOWNS (do not invent answers):
+- Whether the same client previously authenticated successfully against this endpoint.
+- Which environment (local / staging / production) the request originated from.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose auth_missing
+
+NEXT STEPS:
+1. Confirm the API key is set in the environment that issued the request.
+2. Print the outbound headers immediately before send to verify Authorization is present.
+3. Inspect any reverse proxy or service mesh between client and server for header rewrites.
+
+ESCALATION NOTE:
+401 with no Authorization header observed in the request. The header is being dropped or never set; root cause is on the client or in an intermediary, not in the server's auth logic.

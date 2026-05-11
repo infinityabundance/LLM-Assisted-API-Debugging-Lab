@@ -1,0 +1,33 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: timeout
+RULE: connection_timeout
+SEVERITY: high (author judgment: client aborted before any response was received; no graceful degradation possible)
+LIKELY CAUSE: Upstream request exceeded the client's configured timeout.
+
+EVIDENCE:
+- Client timeout: aborted after 5012ms (timeout 5000ms).
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- Server-side processing is slower than the client's timeout budget.
+- Network path between client and server is saturated or degraded.
+- A downstream dependency (DB, queue, third party) is slow for this endpoint.
+
+UNKNOWNS (do not invent answers):
+- Whether this endpoint is normally under the client's timeout.
+- Recent infrastructure or deploy changes on either side.
+- Server-side P99 latency for this endpoint over the same window.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose timeout
+
+NEXT STEPS:
+1. Compare the client timeout against the documented P99 for this endpoint.
+2. Retry once with verbose timing to confirm the abort is on the client side.
+3. Correlate the failed request_id with server-side traces if available.
+4. If the request is normally long-running, raise the timeout or move to async.
+
+ESCALATION NOTE:
+The client aborted before any HTTP response was received. Evidence is consistent with a slow upstream rather than an application-layer error; root cause requires server-side traces correlated by request_id.

@@ -1,0 +1,32 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: bad_payload
+RULE: bad_payload
+SEVERITY: low (author judgment: single client-side request fails with structured validation feedback; correctable by the client without intervention)
+LIKELY CAUSE: Request payload failed server-side schema validation on field `amount`.
+
+EVIDENCE:
+- HTTP status: 400
+- JSON validation error on field `amount`: Expected integer, got string.
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- Client serialized a value with the wrong type (e.g. string for an integer).
+- Client SDK is older than the current server schema.
+- Required field is missing or misnamed in the request body.
+
+UNKNOWNS (do not invent answers):
+- Client SDK version and language.
+- Whether other endpoints from the same client succeed.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose bad_payload
+
+NEXT STEPS:
+1. Cross-reference the failing field against the public schema or OpenAPI spec.
+2. Log the full outbound request body in the failing client and inspect the field's type.
+3. Upgrade the client SDK if the schema has changed since it was generated.
+
+ESCALATION NOTE:
+Server responded 400 with a structured validation error. This is a client-side payload bug rather than a service fault; resolution is on the client.

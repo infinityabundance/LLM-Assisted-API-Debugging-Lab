@@ -1,0 +1,15 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: webhook_signature
+RULE: webhook_signature
+SEVERITY: high (author judgment)
+LIKELY CAUSE: Inbound webhook failed HMAC signature verification.
+EVIDENCE:
+- HTTP status: 401
+- HMAC signature verification failed.
+- Clock drift 360s exceeds tolerance 300s.
+- Request body was modified by middleware before verification.
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose webhook_signature

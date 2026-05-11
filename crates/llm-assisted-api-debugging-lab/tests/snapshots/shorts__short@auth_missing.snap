@@ -1,0 +1,13 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: auth_missing
+RULE: auth_missing
+SEVERITY: medium (author judgment)
+LIKELY CAUSE: Request reached the server without an Authorization header.
+EVIDENCE:
+- HTTP status: 401
+- Request header missing: Authorization
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose auth_missing

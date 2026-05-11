@@ -1,0 +1,35 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: rate_limit
+RULE: rate_limit
+SEVERITY: medium (author judgment: expected back-pressure: affects throughput, not correctness; client retry path applies)
+LIKELY CAUSE: Account rate limit exceeded; server requested back-off.
+
+EVIDENCE:
+- HTTP status: 429
+- Retry-After header: 12s
+- Observed rate 112 rps exceeds account limit 100 rps.
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- Client lacks exponential back-off on 429 responses.
+- Multiple concurrent workers share one account quota and burst together.
+- An upstream batch job temporarily lifted request volume above steady state.
+
+UNKNOWNS (do not invent answers):
+- Number of concurrent processes or workers issuing requests.
+- Whether request rate has been trending up over recent days.
+- Whether the account quota has changed recently.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose rate_limit
+
+NEXT STEPS:
+1. Honor the Retry-After value before retrying.
+2. Implement exponential back-off with jitter on 429 responses.
+3. Cap concurrency across workers sharing the same API key.
+4. If sustained, request a quota increase or move bulk work to a batched endpoint.
+
+ESCALATION NOTE:
+Server explicitly signaled 429 with Retry-After; this is expected back-pressure rather than a service fault. Evidence does not yet show whether the client honors Retry-After or retries blindly.

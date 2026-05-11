@@ -1,0 +1,14 @@
+2026-05-11T08:11:35.001Z INFO  http.client msg="dispatching request" request_id=req_neigh_g001 method=GET url=https://api.example.com/v1/healthz
+2026-05-11T08:11:35.024Z INFO  http.client msg="response received" request_id=req_neigh_g001 status=200 elapsed_ms=23
+2026-05-11T08:11:37.118Z INFO  http.client msg="dispatching request" request_id=req_neigh_g002 method=POST url=https://api.example.com/v1/charges
+2026-05-11T08:11:37.221Z INFO  http.client msg="response received" request_id=req_neigh_g002 status=201 elapsed_ms=103
+2026-05-11T08:11:39.005Z INFO  http.client msg="dispatching request" request_id=req_neigh_g003 method=GET url=https://api.example.com/v1/customers
+2026-05-11T08:11:39.077Z INFO  http.client msg="response received" request_id=req_neigh_g003 status=200 elapsed_ms=72
+2026-05-11T08:11:40.000Z INFO  http.client msg="dispatching request" request_id=req_a1b2c3d4e5f60008 method=GET url=https://api.example.com/v1/health timeout_ms=5000
+2026-05-11T08:11:40.014Z DEBUG http.client msg="dns resolved" request_id=req_a1b2c3d4e5f60008 host=api.example.com address=203.0.113.42
+2026-05-11T08:11:40.142Z ERROR http.client msg="tls handshake failed" request_id=req_a1b2c3d4e5f60008 peer=api.example.com error="certificate has expired"
+2026-05-11T08:11:40.156Z WARN  http.client msg="aborting request: tls handshake failed" request_id=req_a1b2c3d4e5f60008 elapsed_ms=156
+2026-05-11T08:11:41.402Z INFO  http.client msg="dispatching request" request_id=req_neigh_g004 method=GET url=https://api.example.com/v1/healthz
+2026-05-11T08:11:41.428Z INFO  http.client msg="response received" request_id=req_neigh_g004 status=200 elapsed_ms=26
+2026-05-11T08:11:43.512Z INFO  http.client msg="dispatching request" request_id=req_neigh_g005 method=GET url=https://api.example.com/v1/balance
+2026-05-11T08:11:43.601Z INFO  http.client msg="response received" request_id=req_neigh_g005 status=200 elapsed_ms=89

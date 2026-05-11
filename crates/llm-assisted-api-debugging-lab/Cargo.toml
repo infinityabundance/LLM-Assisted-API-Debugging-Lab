@@ -1,0 +1,30 @@
+[package]
+name = "llm-assisted-api-debugging-lab"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Deterministic API failure diagnoser with an LLM-assisted prompt template generator."
+
+[lints]
+workspace = true
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+anyhow = "1"
+toml = { version = "0.8", default-features = false, features = ["parse"] }
+
+[dev-dependencies]
+insta = { version = "1", features = ["yaml"] }
+proptest = "1"
+
+[[bin]]
+name = "llm-assisted-api-debugging-lab"
+path = "src/main.rs"
+
+[lib]
+name = "llm_assisted_api_debugging_lab"
+path = "src/lib.rs"

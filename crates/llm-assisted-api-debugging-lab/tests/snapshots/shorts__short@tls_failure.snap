@@ -1,0 +1,12 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: tls_failure
+RULE: tls_failure
+SEVERITY: critical (author judgment)
+LIKELY CAUSE: TLS handshake to "api.example.com" failed; no HTTP request was sent.
+EVIDENCE:
+- TLS handshake to api.example.com failed: certificate has expired (NotAfter: 2025-12-31T23:59:59Z)
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose tls_failure

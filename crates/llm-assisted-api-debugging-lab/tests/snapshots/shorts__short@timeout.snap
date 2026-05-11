@@ -1,0 +1,12 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: timeout
+RULE: connection_timeout
+SEVERITY: high (author judgment)
+LIKELY CAUSE: Upstream request exceeded the client's configured timeout.
+EVIDENCE:
+- Client timeout: aborted after 5012ms (timeout 5000ms).
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose timeout

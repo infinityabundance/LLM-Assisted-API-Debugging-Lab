@@ -1,0 +1,14 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/shorts.rs
+expression: rendered
+---
+CASE: rate_limit
+RULE: rate_limit
+SEVERITY: medium (author judgment)
+LIKELY CAUSE: Account rate limit exceeded; server requested back-off.
+EVIDENCE:
+- HTTP status: 429
+- Retry-After header: 12s
+- Observed rate 112 rps exceeds account limit 100 rps.
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose rate_limit

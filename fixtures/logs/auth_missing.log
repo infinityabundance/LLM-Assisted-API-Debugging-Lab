@@ -1,0 +1,14 @@
+2026-05-11T07:59:55.001Z INFO  http.server msg="request received" request_id=req_neigh_a001 method=GET path=/v1/healthz
+2026-05-11T07:59:55.003Z INFO  http.server msg="request completed" request_id=req_neigh_a001 status=200 elapsed_ms=2
+2026-05-11T07:59:57.412Z INFO  http.server msg="request received" request_id=req_neigh_a002 method=GET path=/v1/customers/cus_masked
+2026-05-11T07:59:57.454Z INFO  http.server msg="request completed" request_id=req_neigh_a002 status=200 elapsed_ms=42
+2026-05-11T07:59:59.187Z INFO  http.server msg="request received" request_id=req_neigh_a003 method=POST path=/v1/refunds
+2026-05-11T07:59:59.265Z INFO  http.server msg="request completed" request_id=req_neigh_a003 status=200 elapsed_ms=78
+2026-05-11T08:00:00.012Z INFO  http.server msg="request received" request_id=req_a1b2c3d4e5f60001 method=POST path=/v1/charges
+2026-05-11T08:00:00.018Z DEBUG auth.middleware msg="checking authorization" request_id=req_a1b2c3d4e5f60001 has_authorization=false
+2026-05-11T08:00:00.019Z WARN  auth.middleware msg="rejecting request: missing Authorization header" request_id=req_a1b2c3d4e5f60001 reason=missing_authorization
+2026-05-11T08:00:00.088Z INFO  http.server msg="request completed" request_id=req_a1b2c3d4e5f60001 status=401 elapsed_ms=88
+2026-05-11T08:00:01.305Z INFO  http.server msg="request received" request_id=req_neigh_a004 method=GET path=/v1/healthz
+2026-05-11T08:00:01.308Z INFO  http.server msg="request completed" request_id=req_neigh_a004 status=200 elapsed_ms=3
+2026-05-11T08:00:03.812Z INFO  http.server msg="request received" request_id=req_neigh_a005 method=GET path=/v1/balance
+2026-05-11T08:00:03.851Z INFO  http.server msg="request completed" request_id=req_neigh_a005 status=200 elapsed_ms=39

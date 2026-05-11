@@ -1,0 +1,32 @@
+---
+source: crates/llm-assisted-api-debugging-lab/tests/reports.rs
+expression: rendered
+---
+CASE: dns_config
+RULE: dns_failure
+SEVERITY: critical (author judgment: connection never reached the API; no application-layer traffic is flowing)
+LIKELY CAUSE: DNS resolution failed for upstream host "api.exmaple.com"
+
+EVIDENCE:
+- DNS resolution failed for api.exmaple.com: no such host
+
+HYPOTHESES (consistent with evidence; not asserted as fact):
+- Hostname is misspelled or points at the wrong environment.
+- Local resolver or upstream DNS provider is failing.
+- Private DNS zone is not reachable from this network.
+
+UNKNOWNS (do not invent answers):
+- Whether other hostnames resolve from the same environment.
+- Recent DNS, hosts-file, or VPN configuration changes.
+
+REPRODUCTION:
+cargo run -p llm-assisted-api-debugging-lab -- diagnose dns_config
+
+NEXT STEPS:
+1. Confirm the hostname character-for-character against documentation.
+2. Run `dig <host>` or `getent hosts <host>` from the affected environment.
+3. Check whether the DNS resolver was changed recently (e.g. systemd-resolved, VPN).
+4. Retry from a known-good network to isolate environment from configuration.
+
+ESCALATION NOTE:
+Connection never reached the API: name resolution for the upstream host failed. Until DNS resolves, no application-level diagnosis is possible.
