@@ -1,5 +1,7 @@
 # LLM-Assisted API Debugging Lab
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/infinityabundance/LLM-Assisted-API-Debugging-Lab/blob/main/notebooks/llm_assisted_api_debugging_lab_colab.ipynb)
+
 A portfolio piece for **Developer Support / Technical Escalation Engineering**:
 a small, reproducible lab for classifying API failures the way a careful
 support engineer does — evidence first, hypothesis second, attribution last.
