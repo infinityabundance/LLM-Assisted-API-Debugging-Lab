@@ -5,6 +5,12 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 description = "Deterministic API failure diagnoser with an LLM-assisted prompt template generator."
+readme = "README.md"
+repository = "https://github.com/infinityabundance/LLM-Assisted-API-Debugging-Lab"
+homepage = "https://github.com/infinityabundance/LLM-Assisted-API-Debugging-Lab"
+documentation = "https://docs.rs/llm-assisted-api-debugging-lab"
+keywords = ["api", "debugging", "llm", "support", "cli"]
+categories = ["command-line-utilities", "development-tools::debugging"]
 
 [lints]
 workspace = true

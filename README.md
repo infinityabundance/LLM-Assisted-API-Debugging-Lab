@@ -92,7 +92,8 @@ LLM-facing surface cannot influence diagnostic truth. See
 crates/llm-assisted-api-debugging-lab/    library + binary
 fixtures/cases/          eight request/response JSON fixtures
 fixtures/logs/           eight matching structured log files
-prose.toml               per-rule editorial content (likely-cause templates,
+crates/llm-assisted-api-debugging-lab/prose.toml
+                         per-rule editorial content (likely-cause templates,
                          hypotheses, unknowns, next-steps, escalation notes,
                          severity rationales)
 docs/                    architecture, LLM workflow, support and hiring notes

@@ -1,0 +1,14 @@
+2026-05-11T08:01:35.001Z INFO  http.server msg="request received" request_id=req_neigh_b001 method=GET path=/v1/healthz
+2026-05-11T08:01:35.004Z INFO  http.server msg="request completed" request_id=req_neigh_b001 status=200 elapsed_ms=3
+2026-05-11T08:01:37.221Z INFO  http.server msg="request received" request_id=req_neigh_b002 method=GET path=/v1/charges/ch_masked
+2026-05-11T08:01:37.276Z INFO  http.server msg="request completed" request_id=req_neigh_b002 status=200 elapsed_ms=55
+2026-05-11T08:01:39.114Z INFO  http.server msg="request received" request_id=req_neigh_b003 method=POST path=/v1/payment_intents
+2026-05-11T08:01:39.198Z INFO  http.server msg="request completed" request_id=req_neigh_b003 status=200 elapsed_ms=84
+2026-05-11T08:01:40.004Z INFO  http.server msg="request received" request_id=req_a1b2c3d4e5f60002 method=POST path=/v1/charges
+2026-05-11T08:01:40.010Z DEBUG auth.middleware msg="authorization ok" request_id=req_a1b2c3d4e5f60002
+2026-05-11T08:01:40.022Z WARN  charges.handler msg="schema validation failed" request_id=req_a1b2c3d4e5f60002 field=amount expected=integer got=string
+2026-05-11T08:01:40.031Z INFO  http.server msg="request completed" request_id=req_a1b2c3d4e5f60002 status=400 elapsed_ms=31
+2026-05-11T08:01:41.502Z INFO  http.server msg="request received" request_id=req_neigh_b004 method=GET path=/v1/healthz
+2026-05-11T08:01:41.504Z INFO  http.server msg="request completed" request_id=req_neigh_b004 status=200 elapsed_ms=2
+2026-05-11T08:01:43.018Z INFO  http.server msg="request received" request_id=req_neigh_b005 method=POST path=/v1/charges
+2026-05-11T08:01:43.094Z INFO  http.server msg="request completed" request_id=req_neigh_b005 status=200 elapsed_ms=76

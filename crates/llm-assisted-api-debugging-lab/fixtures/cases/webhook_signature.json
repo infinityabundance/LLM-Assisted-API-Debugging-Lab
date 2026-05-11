@@ -1,0 +1,37 @@
+{
+  "name": "webhook_signature",
+  "description": "Inbound webhook fails HMAC signature verification.",
+  "request": {
+    "method": "POST",
+    "url": "https://hooks.customer.example/handle",
+    "headers": {
+      "User-Agent": "ExampleWebhooks/1.0",
+      "Content-Type": "application/json",
+      "X-Signature-Timestamp": "1746950680",
+      "X-Signature": "v1=8f3c0e9f0c8bb8a4a1f8d8b6cda4f5cfb6f3a8e1c5d2b7a6c4d3e2f1a09b8c7d",
+      "X-Webhook-Event": "charge.succeeded",
+      "X-Request-Id": "req_a1b2c3d4e5f60004"
+    },
+    "body_summary": "{\"id\":\"evt_***\",\"type\":\"charge.succeeded\",\"data\":{\"object\":{\"id\":\"ch_***\"}}}",
+    "client_unix_ts": 1746950680
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Request-Id": "req_a1b2c3d4e5f60004"
+    },
+    "body_summary": "{\"error\":{\"type\":\"unauthorized\",\"code\":\"invalid_signature\",\"message\":\"Signature did not match expected value.\"}}",
+    "server_unix_ts": 1746951040,
+    "elapsed_ms": 9
+  },
+  "context": {
+    "dns_resolved": true,
+    "tls_handshake_ms": 41,
+    "client_clock_skew_secs": -360,
+    "signing_required": true,
+    "signature_tolerance_secs": 300,
+    "body_mutated_before_verification": true
+  },
+  "log_path": "fixtures/logs/webhook_signature.log"
+}

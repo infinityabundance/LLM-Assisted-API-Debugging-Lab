@@ -1,0 +1,18 @@
+2026-05-11T08:04:35.011Z INFO  http.server msg="request received" request_id=req_neigh_d001 method=POST path=/handle event=invoice.paid
+2026-05-11T08:04:35.014Z DEBUG webhook.verify msg="hmac ok" request_id=req_neigh_d001
+2026-05-11T08:04:35.018Z INFO  http.server msg="request completed" request_id=req_neigh_d001 status=200 elapsed_ms=7
+2026-05-11T08:04:37.402Z INFO  http.server msg="request received" request_id=req_neigh_d002 method=GET path=/healthz
+2026-05-11T08:04:37.405Z INFO  http.server msg="request completed" request_id=req_neigh_d002 status=200 elapsed_ms=3
+2026-05-11T08:04:39.211Z INFO  http.server msg="request received" request_id=req_neigh_d003 method=POST path=/handle event=charge.refunded
+2026-05-11T08:04:39.218Z DEBUG webhook.verify msg="hmac ok" request_id=req_neigh_d003
+2026-05-11T08:04:39.220Z INFO  http.server msg="request completed" request_id=req_neigh_d003 status=200 elapsed_ms=9
+2026-05-11T08:04:40.001Z INFO  http.server msg="request received" request_id=req_a1b2c3d4e5f60004 method=POST path=/handle event=charge.succeeded
+2026-05-11T08:04:40.002Z DEBUG body.middleware msg="parsed JSON body and re-encoded" request_id=req_a1b2c3d4e5f60004 body_modified=true
+2026-05-11T08:04:40.005Z DEBUG webhook.verify msg="computing HMAC" request_id=req_a1b2c3d4e5f60004 signature_timestamp=1746950680 server_unix_ts=1746951040 drift_secs=360 tolerance_secs=300
+2026-05-11T08:04:40.006Z WARN  webhook.verify msg="signature verification failed" request_id=req_a1b2c3d4e5f60004 reason=signature_mismatch
+2026-05-11T08:04:40.009Z INFO  http.server msg="request completed" request_id=req_a1b2c3d4e5f60004 status=401 elapsed_ms=9
+2026-05-11T08:04:41.512Z INFO  http.server msg="request received" request_id=req_neigh_d004 method=POST path=/handle event=customer.created
+2026-05-11T08:04:41.519Z DEBUG webhook.verify msg="hmac ok" request_id=req_neigh_d004
+2026-05-11T08:04:41.521Z INFO  http.server msg="request completed" request_id=req_neigh_d004 status=200 elapsed_ms=9
+2026-05-11T08:04:43.018Z INFO  http.server msg="request received" request_id=req_neigh_d005 method=GET path=/healthz
+2026-05-11T08:04:43.020Z INFO  http.server msg="request completed" request_id=req_neigh_d005 status=200 elapsed_ms=2

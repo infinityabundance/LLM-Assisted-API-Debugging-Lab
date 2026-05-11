@@ -1,0 +1,13 @@
+2026-05-11T08:09:55.001Z INFO  http.client msg="dispatching request" request_id=req_neigh_h001 method=GET url=https://api.example.com/v1/healthz
+2026-05-11T08:09:55.024Z INFO  http.client msg="response received" request_id=req_neigh_h001 status=200 elapsed_ms=23
+2026-05-11T08:09:57.118Z INFO  http.client msg="dispatching request" request_id=req_neigh_h002 method=GET url=https://api.example.com/v1/balance
+2026-05-11T08:09:57.205Z INFO  http.client msg="response received" request_id=req_neigh_h002 status=200 elapsed_ms=87
+2026-05-11T08:09:59.005Z INFO  http.client msg="dispatching request" request_id=req_neigh_h003 method=POST url=https://api.example.com/v1/charges
+2026-05-11T08:09:59.142Z INFO  http.client msg="response received" request_id=req_neigh_h003 status=200 elapsed_ms=137
+2026-05-11T08:10:00.000Z INFO  http.client msg="dispatching request" request_id=req_a1b2c3d4e5f60007 method=GET url=https://api.example.com/v1/health timeout_ms=5000
+2026-05-11T08:10:00.136Z ERROR http.client msg="name resolution failed" request_id=req_a1b2c3d4e5f60007 host=api.example.com error="no such host"
+2026-05-11T08:10:00.138Z WARN  http.client msg="aborting request: dns lookup failed" request_id=req_a1b2c3d4e5f60007 elapsed_ms=138
+2026-05-11T08:10:01.402Z INFO  http.client msg="dispatching request" request_id=req_neigh_h004 method=GET url=https://api.example.com/v1/healthz
+2026-05-11T08:10:01.428Z INFO  http.client msg="response received" request_id=req_neigh_h004 status=200 elapsed_ms=26
+2026-05-11T08:10:03.512Z INFO  http.client msg="dispatching request" request_id=req_neigh_h005 method=POST url=https://api.example.com/v1/charges
+2026-05-11T08:10:03.625Z INFO  http.client msg="response received" request_id=req_neigh_h005 status=200 elapsed_ms=113

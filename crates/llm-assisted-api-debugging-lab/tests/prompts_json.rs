@@ -11,9 +11,8 @@ use std::path::PathBuf;
 
 fn project_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../..")
         .canonicalize()
-        .expect("project root resolves")
+        .expect("crate root resolves")
 }
 
 fn fixtures_dir() -> PathBuf {

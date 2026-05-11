@@ -9,7 +9,7 @@ Case JSON + log file
    Vec<Evidence>
         |
         v   diagnose(name, evidence)        <-- pure rules, no I/O
-     Diagnosis    <-- prose loaded from prose.toml at the workspace root
+     Diagnosis    <-- prose loaded from prose.toml at the crate root
         |
         +--> render_report(diagnosis)         human report
         |
@@ -21,7 +21,7 @@ Case JSON + log file
 ```
 
 Editorial separation: rule logic lives in `crates/llm-assisted-api-debugging-lab/src/diagnose.rs`,
-prose lives in `prose.toml`. Wording changes (a clearer hypothesis, a tighter
+prose lives in `crates/llm-assisted-api-debugging-lab/prose.toml`. Wording changes (a clearer hypothesis, a tighter
 escalation note) do not require a code change. Rule logic changes (severity,
 rule order, evidence patterns) still go in `diagnose.rs`.
 
@@ -50,7 +50,7 @@ Three properties are deliberately preserved by this shape:
 | `diagnose.rs` | Rules engine. Each rule is its own function returning `Option<Diagnosis>`; the rule-specific bits (trigger, severity, pinned evidence, likely-cause computation) live in the rule arm, while the `Diagnosis` construction itself goes through the `from_rule` builder so every rule produces the same shape. |
 | `report.rs` | `Diagnosis -> String` (human report) plus `render_short` for the compact diagnose summary. |
 | `llm_prompt.rs` | `Diagnosis -> String` (prose prompt template) plus `Diagnosis -> serde_json::Value` (JSON envelope) and the boundary sanitizer. |
-| `prose.rs` | Loads per-rule prose (likely-cause templates, hypotheses, unknowns, next-steps, escalation note, severity rationale) from `prose.toml` at the workspace root via `include_str!` + `OnceLock`. |
+| `prose.rs` | Loads per-rule prose (likely-cause templates, hypotheses, unknowns, next-steps, escalation note, severity rationale) from `prose.toml` at the crate root via `include_str!` + `OnceLock`. |
 | `main.rs` | clap CLI, dispatches to library functions. Exit codes: 0 success, 2 unknown case, 3 malformed fixture. |
 
 ## Log marker grammar

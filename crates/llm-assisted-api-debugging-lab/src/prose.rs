@@ -2,7 +2,7 @@
 //!
 //! All editorial content (likely-cause templates, hypotheses, unknowns,
 //! next-step bullets, escalation-note copy, severity rationale) lives in
-//! `prose.toml` at the workspace root, embedded into the binary via
+//! `prose.toml` at the crate root, embedded into the binary via
 //! `include_str!` and parsed once on first access through `OnceLock`.
 //!
 //! Rule logic in `diagnose.rs` references prose by rule name; mismatches
@@ -19,7 +19,7 @@ use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::sync::OnceLock;
 
-const PROSE_TOML: &str = include_str!("../../../prose.toml");
+const PROSE_TOML: &str = include_str!("../prose.toml");
 
 /// Top-level deserialized form of `prose.toml`.
 ///

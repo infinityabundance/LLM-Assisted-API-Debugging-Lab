@@ -234,9 +234,7 @@ mod tests {
     use super::*;
 
     fn fixtures_dir() -> PathBuf {
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../..")
-            .join("fixtures")
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("fixtures")
     }
 
     #[test]

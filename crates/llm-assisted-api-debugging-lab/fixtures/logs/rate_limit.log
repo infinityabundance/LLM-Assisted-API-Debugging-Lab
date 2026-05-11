@@ -1,0 +1,14 @@
+2026-05-11T08:03:15.001Z INFO  http.server msg="request received" request_id=req_neigh_c001 method=GET path=/v1/healthz
+2026-05-11T08:03:15.004Z INFO  http.server msg="request completed" request_id=req_neigh_c001 status=200 elapsed_ms=3
+2026-05-11T08:03:17.118Z INFO  http.server msg="request received" request_id=req_neigh_c002 method=GET path=/v1/customers
+2026-05-11T08:03:17.181Z INFO  http.server msg="request completed" request_id=req_neigh_c002 status=200 elapsed_ms=63
+2026-05-11T08:03:19.005Z INFO  http.server msg="request received" request_id=req_neigh_c003 method=GET path=/v1/customers
+2026-05-11T08:03:19.078Z INFO  http.server msg="request completed" request_id=req_neigh_c003 status=200 elapsed_ms=73
+2026-05-11T08:03:19.998Z INFO  http.server msg="request received" request_id=req_a1b2c3d4e5f60003 method=GET path=/v1/customers
+2026-05-11T08:03:19.999Z DEBUG ratelimit msg="account quota check" request_id=req_a1b2c3d4e5f60003 account=acct_*** observed_rps=104 limit_rps=100
+2026-05-11T08:03:20.000Z WARN  ratelimit msg="burst above limit" request_id=req_a1b2c3d4e5f60003 account=acct_*** observed_rps=112 limit_rps=100 retry_after_secs=12
+2026-05-11T08:03:20.014Z INFO  http.server msg="request completed" request_id=req_a1b2c3d4e5f60003 status=429 elapsed_ms=14
+2026-05-11T08:03:21.402Z INFO  http.server msg="request received" request_id=req_neigh_c004 method=GET path=/v1/healthz
+2026-05-11T08:03:21.405Z INFO  http.server msg="request completed" request_id=req_neigh_c004 status=200 elapsed_ms=3
+2026-05-11T08:03:23.811Z INFO  http.server msg="request received" request_id=req_neigh_c005 method=POST path=/v1/charges
+2026-05-11T08:03:23.889Z INFO  http.server msg="request completed" request_id=req_neigh_c005 status=200 elapsed_ms=78

@@ -74,8 +74,9 @@ Reading order for a code review:
 2. `crates/llm-assisted-api-debugging-lab/src/evidence.rs` - what the rules consume.
 3. `crates/llm-assisted-api-debugging-lab/src/llm_prompt.rs` - the prompt design and
    sanitization (both prose and JSON-envelope renderers).
-4. `crates/llm-assisted-api-debugging-lab/src/prose.rs` and `prose.toml` at the workspace
-   root - the editorial/logic split.
+4. `crates/llm-assisted-api-debugging-lab/src/prose.rs` and
+   `crates/llm-assisted-api-debugging-lab/prose.toml` - the
+   editorial/logic split.
 5. `crates/llm-assisted-api-debugging-lab/tests/snapshots/` - what the output actually looks
    like for each case, including the `injection_attempt` snapshot showing
    sanitization in action and the `tls_failure` snapshot showing a single

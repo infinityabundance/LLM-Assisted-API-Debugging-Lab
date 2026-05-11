@@ -30,7 +30,7 @@
 //!
 //! The hand-written English content (likely-cause templates, hypotheses,
 //! unknowns, next-steps, escalation notes, severity rationales) lives in
-//! `prose.toml` at the workspace root. Editorial changes (a clearer
+//! `prose.toml` at the crate root. Editorial changes (a clearer
 //! hypothesis, a tighter escalation note) do not require a code change.
 //! Logic changes (severity, rule order, evidence patterns) still go here.
 
