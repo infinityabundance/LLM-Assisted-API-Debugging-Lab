@@ -43,6 +43,21 @@ text only; the binary makes no network calls.
   on-call rotation would weight by blast radius too; the diagnoser has no
   visibility into that.
 
+---
+
+## For hiring reviewers
+
+If you have 90 seconds:
+
+1. Run `cargo install llm-assisted-api-debugging-lab && llm-assisted-api-debugging-lab diagnose webhook_signature`.
+2. Skim `crates/llm-assisted-api-debugging-lab/src/diagnose.rs` for the deterministic diagnosis rules.
+3. Skim `crates/llm-assisted-api-debugging-lab/tests/` for integration, property, and snapshot-pinned tests.
+4. Read `docs/architecture.md` and `docs/llm_assisted_workflow.md`.
+
+This project demonstrates Rust tooling, deterministic API diagnosis, evidence-first support reports, prompt-safe LLM-assisted escalation workflows, and clear developer-support communication.
+
+---
+
 ## Five-minute path
 
 ```
